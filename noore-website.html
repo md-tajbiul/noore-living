@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NOORÉ — Handmade Candles & Home Living</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --charcoal: #1E1B18;
+  --charcoal-mid: #2C2825;
+  --charcoal-light: #4A4340;
+  --stone: #7A7069;
+  --stone-light: #A89E96;
+  --sand: #F5F0E8;
+  --sand-deep: #EBE3D5;
+  --sand-pale: #FAF8F4;
+  --gold: #B8966A;
+  --gold-light: #D4B896;
+  --gold-pale: #EDE0CC;
+  --white: #FDFCFA;
+  --sage: #8A9E8A;
+  --teal: #4A7070;
+  --terracotta: #9B6B52;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  background: var(--white);
+  color: var(--charcoal);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed;
+  width: 8px; height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s var(--ease), opacity 0.2s;
+  transform: translate(-50%, -50%);
+}
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 0.5px solid var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.4s var(--ease-out), width 0.3s, height 0.3s, opacity 0.3s;
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+}
+.cursor-ring.expanded { width: 60px; height: 60px; opacity: 0.25; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: var(--white); }
+::-webkit-scrollbar-thumb { background: var(--gold-light); }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 4rem;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.5s, border-color 0.5s;
+  border-bottom: 0.5px solid transparent;
+}
+nav.scrolled {
+  background: rgba(253,252,250,0.96);
+  backdrop-filter: blur(16px);
+  border-bottom-color: var(--sand-deep);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.4s;
+}
+nav.scrolled .nav-logo { color: var(--charcoal); }
+.nav-links {
+  display: flex; gap: 2.5rem; align-items: center;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(253,252,250,0.65);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+nav.scrolled .nav-links a { color: var(--stone); }
+.nav-links a:hover { color: var(--gold) !important; }
+.nav-wa {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(37,211,102,0.8) !important;
+  border: 0.5px solid rgba(37,211,102,0.35);
+  padding: 0.5rem 1.25rem;
+  border-radius: 2px;
+  transition: background 0.3s, color 0.3s !important;
+}
+.nav-wa:hover { background: rgba(37,211,102,0.1) !important; }
+
+/* HERO */
+.hero {
+  height: 100vh;
+  min-height: 700px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  background: var(--charcoal-mid);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 70%, rgba(184,150,106,0.2) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(138,158,138,0.08) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(155,107,82,0.06) 0%, transparent 60%);
+}
+.hero-grain {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+.hero-lines {
+  position: absolute; inset: 0; overflow: hidden;
+}
+.hero-line {
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 0.5px;
+  background: rgba(184,150,106,0.08);
+  transform: translateX(-50%);
+}
+.hero-line:nth-child(1) { margin-left: -320px; }
+.hero-line:nth-child(2) { margin-left: -160px; }
+.hero-line:nth-child(3) { margin-left: 0; }
+.hero-line:nth-child(4) { margin-left: 160px; }
+.hero-line:nth-child(5) { margin-left: 320px; }
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease-out) 0.3s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(68px, 10vw, 120px);
+  font-weight: 300;
+  color: var(--sand-pale);
+  letter-spacing: 0.08em;
+  line-height: 0.9;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1.2s var(--ease-out) 0.5s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-light);
+}
+.hero-subtitle {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.35);
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease-out) 0.8s forwards;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; justify-content: center; align-items: center;
+  opacity: 0;
+  animation: fadeUp 1s var(--ease-out) 1s forwards;
+}
+.btn-primary {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  background: var(--gold-light);
+  padding: 0.85rem 2.5rem;
+  border: none;
+  border-radius: 1px;
+  text-decoration: none;
+  transition: background 0.3s, letter-spacing 0.3s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--gold); letter-spacing: 0.25em; }
+.btn-outline {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.65);
+  border: 0.5px solid rgba(250,248,244,0.2);
+  padding: 0.85rem 2.5rem;
+  text-decoration: none;
+  transition: color 0.3s, border-color 0.3s;
+  display: inline-block;
+}
+.btn-outline:hover { color: var(--gold); border-color: rgba(184,150,106,0.5); }
+.hero-scroll {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.75rem;
+  opacity: 0;
+  animation: fadeIn 1s var(--ease-out) 1.5s forwards;
+}
+.hero-scroll span {
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.3);
+}
+.scroll-line {
+  width: 0.5px; height: 48px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+/* MARQUEE */
+.marquee-band {
+  background: var(--charcoal);
+  padding: 0.85rem 0;
+  overflow: hidden;
+  border-top: 0.5px solid rgba(184,150,106,0.15);
+  border-bottom: 0.5px solid rgba(184,150,106,0.15);
+}
+.marquee-inner {
+  display: flex;
+  animation: marquee 24s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--stone);
+  padding: 0 2.5rem;
+}
+.marquee-dot {
+  color: var(--gold);
+  margin: 0 0.5rem;
+}
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* INTRO SECTION */
+.intro {
+  padding: 9rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 8rem;
+  align-items: center;
+}
+.intro-left .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+.intro-left h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 4vw, 54px);
+  font-weight: 300;
+  line-height: 1.15;
+  color: var(--charcoal);
+  margin-bottom: 2rem;
+}
+.intro-left h2 em { font-style: italic; color: var(--stone); }
+.intro-left p {
+  font-size: 14px;
+  color: var(--stone);
+  line-height: 1.9;
+  margin-bottom: 2.5rem;
+}
+.intro-right {
+  position: relative;
+}
+.intro-img-frame {
+  position: relative;
+  background: var(--sand);
+  aspect-ratio: 3/4;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.intro-img-frame::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 80%, rgba(184,150,106,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 20%, rgba(74,112,112,0.1) 0%, transparent 50%);
+}
+.intro-img-placeholder {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 120px;
+  opacity: 0.06;
+  color: var(--charcoal);
+  user-select: none;
+}
+.intro-float-tag {
+  position: absolute;
+  bottom: -1.5rem;
+  left: -2rem;
+  background: var(--charcoal);
+  padding: 1.25rem 1.5rem;
+  border-radius: 2px;
+}
+.float-tag-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.float-tag-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.4);
+  margin-top: 0.3rem;
+}
+
+/* COLLECTIONS */
+.collections {
+  padding: 6rem 4rem 8rem;
+  background: var(--sand);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+.section-header .eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: block;
+}
+.section-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  color: var(--charcoal);
+}
+.collection-tabs {
+  display: flex; gap: 0.5rem; justify-content: center;
+  margin-bottom: 3.5rem;
+  flex-wrap: wrap;
+}
+.coll-tab {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--stone);
+  padding: 0.5rem 1.25rem;
+  border: 0.5px solid var(--sand-deep);
+  background: transparent;
+  cursor: none;
+  transition: all 0.3s;
+  border-radius: 1px;
+}
+.coll-tab.active, .coll-tab:hover {
+  background: var(--charcoal);
+  color: var(--gold-light);
+  border-color: var(--charcoal);
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.product-card {
+  background: var(--white);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.5s var(--ease-out);
+}
+.product-card:hover { transform: translateY(-6px); }
+.product-img {
+  aspect-ratio: 4/5;
+  background: var(--sand-deep);
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.product-img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--charcoal);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.product-card:hover .product-img::after { opacity: 0.15; }
+.product-glyph {
+  font-size: 72px;
+  opacity: 0.08;
+  color: var(--charcoal);
+  user-select: none;
+  position: relative; z-index: 1;
+  font-family: 'Cormorant Garamond', serif;
+}
+.product-img-bg {
+  position: absolute; inset: 0;
+}
+.product-badge {
+  position: absolute;
+  top: 1rem; left: 1rem;
+  z-index: 2;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 1px;
+}
+.badge-new { background: var(--charcoal); color: var(--gold-light); }
+.badge-limited { background: var(--terracotta); color: rgba(253,252,250,0.85); }
+.product-info {
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+.product-coll {
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+.product-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 0.35rem;
+  line-height: 1.2;
+}
+.product-scent {
+  font-size: 12px;
+  color: var(--stone-light);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.product-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--charcoal);
+}
+.product-price sup { font-size: 13px; vertical-align: super; }
+.product-wa-btn {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--stone);
+  border: 0.5px solid var(--sand-deep);
+  padding: 0.45rem 0.9rem;
+  text-decoration: none;
+  transition: all 0.3s;
+  border-radius: 1px;
+  background: transparent;
+  cursor: none;
+}
+.product-wa-btn:hover {
+  background: var(--charcoal);
+  color: var(--gold-light);
+  border-color: var(--charcoal);
+}
+
+/* FEATURED BANNER */
+.feature-banner {
+  background: var(--charcoal-mid);
+  padding: 8rem 4rem;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 6rem;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.feature-banner::before {
+  content: '';
+  position: absolute;
+  top: -100px; right: -100px;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(184,150,106,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.feature-left .eyebrow { color: var(--gold); }
+.feature-left h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 300;
+  color: var(--sand-pale);
+  line-height: 1.15;
+  margin: 1rem 0 1.5rem;
+}
+.feature-left h2 em { font-style: italic; color: var(--gold-light); }
+.feature-left p {
+  font-size: 14px;
+  color: rgba(250,248,244,0.45);
+  line-height: 1.9;
+  margin-bottom: 2.5rem;
+  max-width: 440px;
+}
+.feature-price-row {
+  display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem;
+}
+.feature-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  color: var(--gold-light);
+  font-weight: 300;
+}
+.feature-price sup { font-size: 18px; vertical-align: super; }
+.feature-price-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: rgba(250,248,244,0.3);
+}
+.feature-right {
+  position: relative;
+  height: 480px;
+}
+.feature-img-main {
+  position: absolute;
+  right: 0; top: 0;
+  width: 75%;
+  height: 100%;
+  background: linear-gradient(145deg, #3A3430 0%, #2C2825 100%);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.feature-img-main::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 40% 60%, rgba(184,150,106,0.2) 0%, transparent 60%);
+}
+.feature-img-accent {
+  position: absolute;
+  left: 0; bottom: -1.5rem;
+  width: 45%;
+  height: 55%;
+  background: var(--sand);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  box-shadow: 20px 20px 60px rgba(0,0,0,0.25);
+}
+.feature-img-accent::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 40%, rgba(184,150,106,0.15) 0%, transparent 60%);
+}
+.feat-glyph {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px;
+  opacity: 0.06;
+  color: var(--charcoal);
+  user-select: none;
+}
+.feat-glyph-light {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px;
+  opacity: 0.07;
+  color: var(--sand-pale);
+  user-select: none;
+}
+
+/* GIFTING SECTION */
+.gifting {
+  padding: 8rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--sand-pale);
+}
+.gifting::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px; height: 800px;
+  border-radius: 50%;
+  border: 0.5px solid var(--sand-deep);
+  pointer-events: none;
+}
+.gifting::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px; height: 550px;
+  border-radius: 50%;
+  border: 0.5px solid var(--sand-deep);
+  pointer-events: none;
+}
+.gifting-inner { position: relative; z-index: 1; }
+.gifting h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  color: var(--charcoal);
+  line-height: 1.1;
+  margin: 1rem 0 1.5rem;
+}
+.gifting h2 em { font-style: italic; color: var(--gold); }
+.gifting p {
+  font-size: 14px;
+  color: var(--stone);
+  max-width: 480px;
+  margin: 0 auto 3rem;
+  line-height: 1.9;
+}
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  max-width: 900px;
+  margin: 0 auto 3rem;
+}
+.gift-card {
+  background: var(--white);
+  border: 0.5px solid var(--sand-deep);
+  border-radius: 2px;
+  padding: 2rem 1.5rem;
+  text-align: left;
+  transition: border-color 0.3s, transform 0.4s var(--ease-out);
+}
+.gift-card:hover { border-color: var(--gold-light); transform: translateY(-4px); }
+.gift-card-icon {
+  font-size: 28px;
+  margin-bottom: 1rem;
+  opacity: 0.35;
+}
+.gift-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--charcoal);
+  margin-bottom: 0.35rem;
+}
+.gift-card-desc {
+  font-size: 12px;
+  color: var(--stone-light);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.gift-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+/* PROCESS */
+.process {
+  padding: 8rem 4rem;
+  background: var(--charcoal);
+}
+.process-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.process .section-header .eyebrow { color: var(--gold); }
+.process .section-header h2 { color: var(--sand-pale); }
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5px;
+  background: rgba(255,255,255,0.04);
+  border: 0.5px solid rgba(255,255,255,0.04);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.process-step {
+  padding: 2.5rem 1.75rem;
+  background: var(--charcoal);
+  position: relative;
+  transition: background 0.3s;
+}
+.process-step:hover { background: rgba(255,255,255,0.02); }
+.step-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 300;
+  color: rgba(184,150,106,0.15);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+.step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--sand-pale);
+  margin-bottom: 0.5rem;
+}
+.step-desc {
+  font-size: 12px;
+  color: rgba(250,248,244,0.35);
+  line-height: 1.7;
+}
+
+/* TESTIMONIALS */
+.testimonials {
+  padding: 8rem 4rem;
+  background: var(--sand);
+}
+.testimonials-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+.testimonials h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--charcoal);
+  margin-bottom: 3.5rem;
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.testimonial-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 2px;
+  border: 0.5px solid var(--sand-deep);
+  text-align: left;
+}
+.testimonial-stars {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.testimonial-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--charcoal-light);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+.testimonial-author {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--stone-light);
+}
+
+/* INSTAGRAM */
+.instagram {
+  padding: 6rem 4rem;
+  background: var(--white);
+}
+.insta-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 3rem;
+}
+.insta-tile {
+  aspect-ratio: 1;
+  background: var(--sand);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.insta-tile:hover { transform: scale(0.97); }
+.insta-tile::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--charcoal);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+.insta-tile:hover::before { opacity: 0.25; }
+.insta-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.insta-tile:hover .insta-overlay { opacity: 1; }
+.insta-overlay span {
+  font-size: 18px;
+  color: rgba(255,255,255,0.9);
+}
+/* Tile backgrounds */
+.insta-tile:nth-child(1) { background: linear-gradient(145deg, #C8A882, #8C6840); }
+.insta-tile:nth-child(2) { background: linear-gradient(145deg, #D8E8E8, #9ABABA); }
+.insta-tile:nth-child(3) { background: linear-gradient(145deg, #E8E0D4, #C4B8A8); }
+.insta-tile:nth-child(4) { background: linear-gradient(145deg, #E2E8D8, #A8C098); }
+.insta-tile:nth-child(5) { background: linear-gradient(145deg, #C4B0A0, #9C8870); }
+.insta-tile:nth-child(6) { background: linear-gradient(145deg, #3A3430, #2C2825); }
+
+/* NEWSLETTER */
+.newsletter {
+  background: var(--charcoal-mid);
+  padding: 6rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.newsletter::before {
+  content: 'NOORÉ';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 300px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.025);
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+}
+.newsletter-inner { position: relative; z-index: 1; }
+.newsletter h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 300;
+  color: var(--sand-pale);
+  margin-bottom: 0.75rem;
+}
+.newsletter h2 em { font-style: italic; color: var(--gold-light); }
+.newsletter p {
+  font-size: 13px;
+  color: rgba(250,248,244,0.4);
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.05em;
+}
+.newsletter-form {
+  display: flex;
+  gap: 0;
+  max-width: 420px;
+  margin: 0 auto;
+  border: 0.5px solid rgba(184,150,106,0.3);
+  border-radius: 1px;
+}
+.newsletter-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 0.85rem 1.25rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--sand-pale);
+  outline: none;
+}
+.newsletter-input::placeholder { color: rgba(250,248,244,0.3); }
+.newsletter-btn {
+  background: var(--gold);
+  border: none;
+  padding: 0.85rem 1.5rem;
+  font-family: 'Jost', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  cursor: none;
+  transition: background 0.3s;
+}
+.newsletter-btn:hover { background: var(--gold-light); }
+
+/* FOOTER */
+footer {
+  background: var(--charcoal);
+  padding: 5rem 4rem 3rem;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.06);
+}
+.footer-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  color: rgba(250,248,244,0.8);
+  margin-bottom: 1rem;
+}
+.footer-brand-desc {
+  font-size: 12px;
+  color: rgba(250,248,244,0.3);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  max-width: 260px;
+}
+.footer-social {
+  display: flex; gap: 1rem;
+}
+.footer-social a {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(250,248,244,0.3);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-social a:hover { color: var(--gold); }
+.footer-col-title {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 0.75rem; }
+.footer-links a {
+  font-size: 13px;
+  color: rgba(250,248,244,0.35);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: rgba(250,248,244,0.7); }
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-copy {
+  font-size: 11px;
+  color: rgba(250,248,244,0.2);
+  letter-spacing: 0.08em;
+}
+.footer-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(250,248,244,0.2);
+}
+
+/* WHATSAPP FLOAT */
+.wa-float {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 500;
+  background: #25D366;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(37,211,102,0.3);
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+  animation: waFloat 0.8s var(--ease-out) 2s both;
+}
+.wa-float:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(37,211,102,0.4); }
+.wa-float svg { width: 26px; height: 26px; fill: white; }
+@keyframes waFloat { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .hero-title { font-size: 64px; }
+  .intro { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.5rem; }
+  .intro-right { display: none; }
+  .collections { padding: 4rem 1.5rem; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-banner { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
+  .feature-right { display: none; }
+  .gifting { padding: 5rem 1.5rem; }
+  .gift-grid { grid-template-columns: 1fr; max-width: 360px; }
+  .process { padding: 5rem 1.5rem; }
+  .process-steps { grid-template-columns: repeat(2, 1fr); }
+  .testimonials { padding: 5rem 1.5rem; }
+  .testimonial-grid { grid-template-columns: 1fr; }
+  .insta-grid { grid-template-columns: repeat(3, 1fr); }
+  .newsletter { padding: 4rem 1.5rem; }
+  footer { padding: 3rem 1.5rem 2rem; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .instagram { padding: 4rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">NOORÉ</a>
+  <ul class="nav-links">
+    <li><a href="#collections">Collections</a></li>
+    <li><a href="#gifting">Gifting</a></li>
+    <li><a href="#process">Our Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+browse+your+collection." class="nav-wa">Order via WhatsApp</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-lines">
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ New Collection — Dusk ✦</p>
+    <h1 class="hero-title">NOO<em>RÉ</em></h1>
+    <p class="hero-subtitle">Candles & Home · Bangladesh</p>
+    <div class="hero-ctas">
+      <a href="#collections" class="btn-primary">Explore Collections</a>
+      <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+browse+your+products." class="btn-outline">Order on WhatsApp</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-band">
+  <div class="marquee-inner">
+    <span class="marquee-item">Handmade in Dhaka</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Premium Soy Blend</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Small Batch Poured</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Cotton Wick</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Gift Ready Packaging</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Free Gift Note</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">WhatsApp Ordering</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Ocean · Botanical · Dusk</span><span class="marquee-dot">✦</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="marquee-item">Handmade in Dhaka</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Premium Soy Blend</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Small Batch Poured</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Cotton Wick</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Gift Ready Packaging</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Free Gift Note</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">WhatsApp Ordering</span><span class="marquee-dot">✦</span>
+    <span class="marquee-item">Ocean · Botanical · Dusk</span><span class="marquee-dot">✦</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro" id="about">
+  <div class="intro-left reveal">
+    <span class="eyebrow">Our Story</span>
+    <h2>A candle is not<br>just a candle.<br><em>It's an atmosphere.</em></h2>
+    <p>Nooré was born from a belief that your home deserves more than mass-produced sameness. Every candle we make is hand-poured in small batches, scented with intention, and finished with the care of something made to be given — or kept.</p>
+    <p>We work with premium soy blends, cotton-core wicks, and fragrance compositions that evolve as they burn. From first light to last flicker, the experience is the product.</p>
+    <a href="#collections" class="btn-primary" style="color:var(--charcoal); background:var(--charcoal); color:var(--gold-light); display:inline-block; padding:0.85rem 2.5rem; text-decoration:none; font-size:10px; letter-spacing:0.2em; text-transform:uppercase;">Discover Collections</a>
+  </div>
+  <div class="intro-right reveal reveal-delay-2">
+    <div class="intro-img-frame">
+      <div class="intro-img-placeholder">𝒩</div>
+    </div>
+    <div class="intro-float-tag">
+      <div class="float-tag-num">100%</div>
+      <div class="float-tag-label">Handmade · Small Batch</div>
+    </div>
+  </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section class="collections" id="collections">
+  <div class="section-header reveal">
+    <span class="eyebrow">Shop by Collection</span>
+    <h2>Find your fragrance</h2>
+  </div>
+  <div class="collection-tabs reveal">
+    <button class="coll-tab active" onclick="filterProducts('all', this)">All</button>
+    <button class="coll-tab" onclick="filterProducts('ocean', this)">Ocean</button>
+    <button class="coll-tab" onclick="filterProducts('dusk', this)">Dusk</button>
+    <button class="coll-tab" onclick="filterProducts('botanical', this)">Botanical</button>
+    <button class="coll-tab" onclick="filterProducts('eid', this)">Eid Collection</button>
+  </div>
+  <div class="products-grid" id="productsGrid">
+
+    <div class="product-card reveal" data-coll="dusk">
+      <div class="product-img" style="background:linear-gradient(145deg,#3A2C22,#2C2018);">
+        <div class="product-badge badge-new">New</div>
+        <span class="product-glyph" style="color:var(--sand-pale);">𝒜</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Dusk Collection</div>
+        <div class="product-name">Amber Oud</div>
+        <div class="product-scent">Warm amber · Deep oud · Smoked sandalwood</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>800</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+Amber+Oud+candle." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-1" data-coll="ocean">
+      <div class="product-img" style="background:linear-gradient(145deg,#1C3040,#0E2030);">
+        <span class="product-glyph" style="color:rgba(180,220,220,0.3);">𝒪</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Ocean Collection</div>
+        <div class="product-name">Sea Salt & Cedar</div>
+        <div class="product-scent">Coastal mist · Driftwood · White cedar</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>600</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+Sea+Salt+Cedar+candle." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-2" data-coll="botanical">
+      <div class="product-img" style="background:linear-gradient(145deg,#2A3828,#1C281A);">
+        <span class="product-glyph" style="color:rgba(160,200,140,0.25);">ℬ</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Botanical Collection</div>
+        <div class="product-name">Jasmine Garden</div>
+        <div class="product-scent">Jasmine bloom · Bergamot · Green fern</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>600</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+Jasmine+Garden+candle." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal" data-coll="dusk">
+      <div class="product-img" style="background:linear-gradient(145deg,#3C2A18,#281808);">
+        <span class="product-glyph" style="color:rgba(212,180,130,0.2);">𝒟</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Dusk Collection</div>
+        <div class="product-name">Dark Fig</div>
+        <div class="product-scent">Smoked fig · Tobacco · Dark musk</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>800</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+Dark+Fig+candle." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-1" data-coll="ocean">
+      <div class="product-img" style="background:linear-gradient(145deg,#203848,#102838);">
+        <span class="product-glyph" style="color:rgba(120,190,190,0.25);">𝒲</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Ocean Collection</div>
+        <div class="product-name">Coral Water</div>
+        <div class="product-scent">Aquatic florals · Sea breeze · Mineral</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>600</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+Coral+Water+candle." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card reveal reveal-delay-2" data-coll="eid">
+      <div class="product-img" style="background:linear-gradient(145deg,#38301C,#28200C);">
+        <div class="product-badge badge-limited">Limited</div>
+        <span class="product-glyph" style="color:rgba(220,190,120,0.25);">ℰ</span>
+      </div>
+      <div class="product-info">
+        <div class="product-coll">Eid Collection</div>
+        <div class="product-name">Rose Oud Gift Set</div>
+        <div class="product-scent">Rose oud · Saffron · Warm musk · Bakhoor</div>
+        <div class="product-footer">
+          <div class="product-price"><sup>৳</sup>1,200</div>
+          <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+the+Rose+Oud+Eid+Gift+Set." class="product-wa-btn">Order</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="feature-banner">
+  <div class="feature-left reveal">
+    <span class="eyebrow" style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; display:block; margin-bottom:1rem;">Featured — Dusk Collection</span>
+    <h2>The candle for<br>the <em>golden hour</em></h2>
+    <p>Amber Oud opens with a warm sweetness before settling into the grounded depth of real oud wood and sandalwood smoke. It's the scent of late evenings, unhurried time, and rooms that feel like home.</p>
+    <div class="feature-price-row">
+      <div class="feature-price"><sup>৳</sup>800</div>
+      <div class="feature-price-label">250ml · 45hr burn · Soy blend</div>
+    </div>
+    <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+the+Amber+Oud+candle." class="btn-primary">Order via WhatsApp</a>
+  </div>
+  <div class="feature-right reveal reveal-delay-2">
+    <div class="feature-img-main">
+      <span class="feat-glyph-light">𝒜</span>
+    </div>
+    <div class="feature-img-accent">
+      <span class="feat-glyph">𝒜</span>
+    </div>
+  </div>
+</section>
+
+<!-- GIFTING -->
+<section class="gifting" id="gifting">
+  <div class="gifting-inner">
+    <div class="reveal">
+      <span class="eyebrow" style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem;">Gifting</span>
+      <h2>The gift of<br><em>atmosphere</em></h2>
+      <p>Every Nooré product is packaged as a gift experience — kraft rigid boxes, satin ribbons, and a handwritten card. Because the way something arrives matters as much as what's inside.</p>
+    </div>
+    <div class="gift-grid">
+      <div class="gift-card reveal">
+        <div class="gift-card-icon">🕯</div>
+        <div class="gift-card-name">Signature Candle</div>
+        <div class="gift-card-desc">A single premium candle in a gift-ready rigid box with ribbon and insert card.</div>
+        <div class="gift-card-price"><sup style="font-size:13px;">৳</sup>800</div>
+      </div>
+      <div class="gift-card reveal reveal-delay-1">
+        <div class="gift-card-icon">🎁</div>
+        <div class="gift-card-name">Duo Gift Set</div>
+        <div class="gift-card-desc">Two curated candles in a larger box with velvet tray, satin ribbon, and a handwritten note.</div>
+        <div class="gift-card-price"><sup style="font-size:13px;">৳</sup>1,200</div>
+      </div>
+      <div class="gift-card reveal reveal-delay-2">
+        <div class="gift-card-icon">✨</div>
+        <div class="gift-card-name">Luxury Collection</div>
+        <div class="gift-card-desc">Three candles, room spray, and a branded tray — the complete home experience, boxed.</div>
+        <div class="gift-card-price"><sup style="font-size:13px;">৳</sup>1,800</div>
+      </div>
+    </div>
+    <a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+order+a+gift+set." class="btn-primary" style="background:var(--charcoal); color:var(--gold-light);">Build Your Gift Set</a>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="process-inner">
+    <div class="section-header reveal" style="margin-bottom:3.5rem;">
+      <span class="eyebrow">How We Make It</span>
+      <h2>Made by hand.<br>Every single one.</h2>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Fragrance Blending</div>
+        <div class="step-desc">Each scent is developed and tested in small batches until the balance feels exactly right — not just at first, but through every stage of the burn.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num">02</div>
+        <div class="step-title">Wax Preparation</div>
+        <div class="step-desc">We use a premium soy blend, melted at precise temperatures and combined with fragrance oils at the optimal moment for maximum scent retention.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num">03</div>
+        <div class="step-title">Hand Pouring</div>
+        <div class="step-desc">Each candle is poured by hand into its vessel, with the wick centred and secured. The wax sets slowly at room temperature for a clean, even surface.</div>
+      </div>
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num">04</div>
+        <div class="step-title">Cure & Package</div>
+        <div class="step-desc">Every candle cures for a minimum of 72 hours before packaging. Each box is assembled by hand — ribbon, tissue, card, and seal — before leaving our studio.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <h2 class="reveal">What our customers feel</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card reveal">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"The Amber Oud genuinely changed how my living room feels in the evening. I've bought it three times now."</div>
+        <div class="testimonial-author">Nadia R. · Dhaka</div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"Gifted the Eid set to my mother. She called me the day it arrived just to tell me how beautiful the packaging was."</div>
+        <div class="testimonial-author">Imran K. · Chittagong</div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-text">"Sea Salt & Cedar is exactly what I didn't know I needed. Clean, calm, and it lasts for hours without becoming overwhelming."</div>
+        <div class="testimonial-author">Farida A. · Dhaka</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM -->
+<section class="instagram">
+  <div class="section-header reveal" style="text-align:center; margin-bottom:0;">
+    <span class="eyebrow" style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:0.75rem;">Follow the Mood</span>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:38px; font-weight:300; color:var(--charcoal); margin-bottom:0.75rem;">@noore.living</h2>
+    <p style="font-size:12px; color:var(--stone); letter-spacing:0.08em;">Behind the scenes, new drops, and the art of slow living.</p>
+  </div>
+  <div class="insta-grid reveal" style="margin-top:2.5rem;">
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+    <div class="insta-tile"><div class="insta-overlay"><span>♡</span></div></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <div class="newsletter-inner reveal">
+    <span style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:1rem;">Stay close</span>
+    <h2>New drops.<br><em>First light.</em></h2>
+    <p>Be the first to know about new collections, limited editions, and seasonal gifts.</p>
+    <form class="newsletter-form" onsubmit="return false;">
+      <input type="email" class="newsletter-input" placeholder="your@email.com">
+      <button class="newsletter-btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">NOORÉ</div>
+      <div class="footer-brand-desc">Handmade candles and home living objects, crafted in small batches in Dhaka. Made for the moments worth lighting.</div>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">TikTok</a>
+        <a href="#">Facebook</a>
+        <a href="https://wa.me/8801975435487">WhatsApp</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Collections</div>
+      <ul class="footer-links">
+        <li><a href="#">Dusk Collection</a></li>
+        <li><a href="#">Ocean Collection</a></li>
+        <li><a href="#">Botanical Collection</a></li>
+        <li><a href="#">Eid & Seasonal</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Information</div>
+      <ul class="footer-links">
+        <li><a href="#">Our Story</a></li>
+        <li><a href="#">How We Make It</a></li>
+        <li><a href="#">Gifting Guide</a></li>
+        <li><a href="#">Care Instructions</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Order</div>
+      <ul class="footer-links">
+        <li><a href="https://wa.me/8801975435487">WhatsApp Order</a></li>
+        <li><a href="#">Delivery Info</a></li>
+        <li><a href="#">Returns Policy</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Nooré. All rights reserved. · noore.living</span>
+    <span class="footer-tagline">The light you didn't know your home was missing.</span>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a href="https://wa.me/8801975435487?text=Hi+Nooré!+I'd+like+to+browse+your+collection." class="wa-float" target="_blank" rel="noopener" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button, .product-card, .gift-card, .coll-tab').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('expanded'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('expanded'));
+});
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// Product filter
+function filterProducts(coll, btn) {
+  document.querySelectorAll('.coll-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.product-card').forEach(card => {
+    const show = coll === 'all' || card.dataset.coll === coll;
+    card.style.opacity = show ? '1' : '0.3';
+    card.style.transform = show ? '' : 'scale(0.97)';
+    card.style.transition = 'opacity 0.4s, transform 0.4s';
+  });
+}
+
+// Smooth anchor scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>
